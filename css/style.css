@@ -121,6 +121,9 @@
     width: 6vmin;
     background-size: cover;
     background-position: center;
+
+    display: flex;
+    justify-content: space-between;
 }
 
 .ic__resource-counter {
@@ -129,6 +132,8 @@
     align-self: flex-end;
     font-size: 1.5rem;
     font-weight: 600;
+
+    justify-self: flex-end;
 }
 
 .ic__button-container {

@@ -24,7 +24,7 @@ const initialMatrix = [
     [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
 ];
 
-export const Resource = {
+export const RESOURCE = {
     SKY: 0,
     CLOUD: 1,
     TREE: 2,
@@ -35,42 +35,37 @@ export const Resource = {
     // WATER: 7, !TODO implement water
 };
 
+export const TOOL = {
+    PICKAXE: {
+        imgClass: 'pickaxe',
+        mineableItems: [RESOURCE.ROCK],
+    },
+    SHOVEL: {
+        imgClass: 'shovel',
+        mineableItems: [RESOURCE.DIRT, RESOURCE.GRASS],
+    },
+    AXE: {
+        imgClass: 'axe',
+        mineableItems: [RESOURCE.TREE, RESOURCE.TRUNK],
+    },
+};
+
+function ResourceItem(name, type) {
+    this.type = type;
+    if (type === RESOURCE.SKY || type === RESOURCE.CLOUD) {
+        this.classList = [name.toLowerCase()];
+    } else {
+        this.classList = ['tile__image', name.toLowerCase()];
+    }
+    this.maxItems = 0;
+    this.minItems = 0;
+}
+
 export const resourceMap = new Map();
 
 export function initGameConstants() {
-    for (const [key, value] of Object.entries(Resource)) {
-        let resourceObj = {
-            name: key,
-            value: value,
-            maxItems: 0 /* TODO: update while drawing */,
-            minItems: 0,
-            classList: [],
-        };
-
-        switch (value) {
-            case Resource.SKY:
-                resourceObj.classList = ['sky'];
-                break;
-            case Resource.CLOUD:
-                resourceObj.classList = ['cloud'];
-                break;
-            case Resource.TREE:
-                resourceObj.classList = ['tile__image', 'tree'];
-                break;
-            case Resource.TRUNK:
-                resourceObj.classList = ['tile__image', 'trunk'];
-                break;
-            case Resource.ROCK:
-                resourceObj.classList = ['tile__image', 'rock'];
-                break;
-            case Resource.GRASS:
-                resourceObj.classList = ['tile__image', 'grass'];
-                break;
-            case Resource.DIRT:
-                resourceObj.classList = ['tile__image', 'dirt'];
-                break;
-        }
-        resourceMap.set(value, resourceObj);
+    for (const [key, value] of Object.entries(RESOURCE)) {
+        resourceMap.set(value, new ResourceItem(key, value));
     }
 }
 

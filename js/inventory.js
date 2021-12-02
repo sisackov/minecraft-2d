@@ -1,61 +1,35 @@
-import { Resource } from './game.js';
+import { RESOURCE, TOOL } from './game.js';
+
+function InventoryItem(key, isTool, name = undefined) {
+    this.name = key;
+    this.classList = [];
+    this.isTool = isTool;
+    if (isTool) {
+        this.classList.push('ic__tool-image');
+        this.classList.push(TOOL[this.name].imgClass);
+        this.mineableItems = TOOL[this.name].mineableItems;
+    } else {
+        this.name = name;
+        this.amount = 0;
+        this.isMineable = key !== RESOURCE.SKY && key !== RESOURCE.CLOUD;
+        if (this.isMineable) {
+            this.classList.push('ic__resource-image');
+            this.classList.push(name.toLowerCase());
+        }
+    }
+}
+
 export const inventoryMap = new Map();
 
 function initInventoryTools() {
-    for (const tool of ['PICKAXE', 'SHOVEL', 'AXE']) {
-        let toolObj = {
-            name: tool,
-            mineableItems: [],
-            classList: [],
-            isTool: true,
-        };
-
-        switch (tool) {
-            case 'PICKAXE':
-                toolObj.mineableItems = [Resource.ROCK];
-                toolObj.classList = ['ic__tool-image', 'pickaxe'];
-                break;
-            case 'SHOVEL':
-                toolObj.mineableItems = [Resource.DIRT, Resource.GRASS];
-                toolObj.classList = ['ic__tool-image', 'shovel'];
-                break;
-            case 'AXE':
-                toolObj.mineableItems = [Resource.TREE, Resource.TRUNK];
-                toolObj.classList = ['ic__tool-image', 'axe'];
-                break;
-        }
-        inventoryMap.set(tool, toolObj);
+    for (const key in TOOL) {
+        inventoryMap.set(key, new InventoryItem(key, true));
     }
 }
 
 function initInventoryItems() {
-    for (const [key, value] of Object.entries(Resource)) {
-        let resourceObj = {
-            name: key,
-            amount: 0,
-            classList: [],
-        };
-
-        switch (value) {
-            case Resource.TREE:
-                resourceObj.classList = ['ic__resource-image', 'tree'];
-                break;
-            case Resource.TRUNK:
-                resourceObj.classList = ['ic__resource-image', 'trunk'];
-                break;
-            case Resource.ROCK:
-                resourceObj.classList = ['ic__resource-image', 'rock'];
-                break;
-            case Resource.GRASS:
-                resourceObj.classList = ['ic__resource-image', 'grass'];
-                break;
-            case Resource.DIRT:
-                resourceObj.classList = ['ic__resource-image', 'dirt'];
-                break;
-            default:
-                break;
-        }
-        inventoryMap.set(value, resourceObj);
+    for (const [key, value] of Object.entries(RESOURCE)) {
+        inventoryMap.set(value, new InventoryItem(value, false, key));
     }
 }
 
@@ -80,6 +54,10 @@ export function createToolElement(tool) {
 
 export function createResourceElement(tool) {
     let toolElement = createInventoryDiv(tool);
+    let span = document.createElement('span');
+    span.classList.add('ic__resource-counter');
+    span.textContent = tool.amount;
+    toolElement.appendChild(span);
     toolElement.addEventListener('click', onToolClick);
     return toolElement;
 }

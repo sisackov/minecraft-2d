@@ -1,7 +1,7 @@
 import {
     getInitialMatrixCopy,
     initGameConstants,
-    // Resource,
+    // RESOURCE,
     resourceMap,
     createGridElement,
 } from './game.js';
@@ -33,14 +33,14 @@ function drawInventory() {
     inventoryMap.forEach((inventoryItem) => {
         if (inventoryItem.isTool) {
             inventoryToolGrid.appendChild(createToolElement(inventoryItem));
-        } else {
+        } else if (inventoryItem.isMineable) {
             inventoryResourceGrid.appendChild(
                 createResourceElement(inventoryItem)
             );
         }
     });
 
-    console.log(inventoryToolGrid);
+    console.log(inventoryResourceGrid);
 }
 
 function initConstants() {
