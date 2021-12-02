@@ -6,7 +6,6 @@ import {
 } from './game.js';
 
 const gameGrid = document.querySelector('.game-container');
-console.log(gameGrid);
 let matrix = getInitialMatrixCopy();
 
 function drawGame() {

@@ -8,18 +8,15 @@
 <div class="page-wrapper">
         <main class="game-container">
             <div class="tile">
-                <img alt="">
             </div>
         </main>
         <div class="inventory-container">
             <div class="ic__tool-container">
                 <div class="ic__tool">
-                        <img alt="" class="ic__tool-image">
                     </div>
                 </div>
             <div class="ic__resource-container">
                 <div class="ic__resource">
-                    <img alt="" class="tile__image tile-grass">
                     <span class="ic__resource-counter">23</span>
                 </div>
             </div>
