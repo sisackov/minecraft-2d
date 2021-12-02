@@ -48,6 +48,10 @@
     background-position: center;
 }
 
+.sky {
+    background-color: skyblue;
+}
+
 .cloud {
     background-color: cornsilk;
 }
