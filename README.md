@@ -1,5 +1,9 @@
 # minecraft-2d
 
+## Netlify
+https://minecraft-2d-game.netlify.app/
+
+
 ## Plan-out
 
 ### HTML/CSS
