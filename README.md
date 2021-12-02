@@ -20,7 +20,7 @@
             <div class="ic__resource-container">
                 <div class="ic__resource">
                     <img alt="" class="tile__image tile-grass">
-                    <span class="ic__resource--counter">23</span>
+                    <span class="ic__resource-counter">23</span>
                 </div>
             </div>
             <div class="ic__button-container">

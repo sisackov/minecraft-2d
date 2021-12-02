@@ -9,17 +9,144 @@
     width: 100vw;
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     margin: 0;
-    background-color: black;
+    background-color: sandybrown;
 }
 
 .game-container {
-    background-color: white;
     width: 100vmin;
     height: 100vmin;
 
     display: grid;
     grid-template-columns: repeat(20, 1fr);
     grid-template-rows: repeat(20, 1fr);
+    background-color: white;
+}
+
+.inventory-container {
+    /* justify-self: flex-end;
+    align-self: flex-end; */
+    background-color: #233;
+    width: 40vmin;
+    height: 100vmin;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tile {
+    background-color: skyblue;
+}
+
+.tile__image {
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.cloud {
+    background-color: cornsilk;
+}
+
+.tree {
+    background-image: url('../images/tree.jpg');
+}
+
+.trunk {
+    background-image: url('../images/trunk.jpg');
+}
+
+.stone {
+    background-image: url('../images/stone.jpg');
+}
+
+.grass {
+    background-image: url('../images/grass.jpg');
+}
+
+.dirt {
+    background-image: url('../images/dirt.jpg');
+}
+
+.ic__tool-container,
+.ic__resource-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+
+    grid-gap: 1vmin;
+}
+
+.ic__tool,
+.ic__resource {
+    height: 12vmin;
+    width: 12vmin;
+
+    display: flex;
+    justify-content: center;
+}
+
+.ic__tool-image {
+    cursor: pointer;
+    border: 0.5vmin solid #ccc;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    /* background-image: url('../img/mc_shovel.jpg'); */
+}
+
+.shovel {
+    background-image: url('../images/shovel.png');
+}
+
+.pickaxe {
+    background-image: url('../images/pickaxe.png');
+}
+
+.axe {
+    background-image: url('../images/axe.png');
+}
+
+.ic__resource-image {
+    height: 100%;
+    width: 80%;
+    background-size: cover;
+    background-position: center;
+    /* background-image: url('../img/mc_top_dirt.jpg'); */
+}
+
+.ic__resource-counter {
+    margin-left: 0.5vmin;
+    color: orange;
+    align-self: flex-end;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.ic__button-container {
+    justify-self: flex-end;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ic-button {
+    line-height: 1.9rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    margin-bottom: 2vmin;
+    padding: 0.08rem;
+    width: 10rem;
+
+    border-radius: 0.5rem;
+    background-color: black;
+    color: white;
 }
