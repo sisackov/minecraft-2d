@@ -6,7 +6,7 @@
 
 ```
 <div class="page-wrapper">
-        <main class="world-container">
+        <main class="game-container">
             <div class="tile">
                 <img alt="">
             </div>
@@ -32,7 +32,7 @@
 ```
 
 -   page-wrapper: flex-container
--   world-container: grid of 20x20 tiles
+-   game-container: grid of 20x20 tiles
 -   tile: div dynamically created in JS
 -   tile\_\_image: image dynamically created in JS
 -   inventory-container: flex-container column
