@@ -1,8 +1,8 @@
 # minecraft-2d
 
 ## Netlify
-https://minecraft-2d-game.netlify.app/
 
+https://minecraft-2d-game.netlify.app/
 
 ## Work-Plan
 
@@ -16,9 +16,8 @@ https://minecraft-2d-game.netlify.app/
         </main>
         <div class="inventory-container">
             <div class="ic__tool-container">
-                <div class="ic__tool">
-                    </div>
-                </div>
+                <div class="ic__tool"> </div>
+            </div>
             <div class="ic__resource-container">
                 <div class="ic__resource">
                     <span class="ic__resource-counter">23</span>

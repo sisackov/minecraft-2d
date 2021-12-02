@@ -33,7 +33,7 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -64,8 +64,8 @@
     background-image: url('../images/trunk.jpg');
 }
 
-.stone {
-    background-image: url('../images/stone.jpg');
+.rock {
+    background-image: url('../images/rock.jpg');
 }
 
 .grass {
@@ -76,40 +76,40 @@
     background-image: url('../images/dirt.jpg');
 }
 
-.ic__tool-container,
+.ic__tool-container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1.5vmin;
+    align-self: flex-start;
+    margin-left: 5vmin;
+}
+
 .ic__resource-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
 
-    grid-gap: 1vmin;
-}
-
-.ic__tool,
-.ic__resource {
-    height: 12vmin;
-    width: 12vmin;
-
-    display: flex;
-    justify-content: center;
+    gap: 2vmin;
+    align-self: flex-start;
+    margin-left: 5vmin;
 }
 
 .ic__tool-image {
     cursor: pointer;
     border: 0.5vmin solid #ccc;
-    height: 100%;
-    width: 100%;
+    height: 10vmin;
+    width: 10vmin;
     background-size: cover;
     background-position: center;
-    /* background-image: url('../img/mc_shovel.jpg'); */
-}
-
-.shovel {
-    background-image: url('../images/shovel.png');
 }
 
 .pickaxe {
     background-image: url('../images/pickaxe.png');
+}
+
+.shovel {
+    background-image: url('../images/shovel.png');
 }
 
 .axe {
@@ -117,11 +117,10 @@
 }
 
 .ic__resource-image {
-    height: 100%;
-    width: 80%;
+    height: 6vmin;
+    width: 6vmin;
     background-size: cover;
     background-position: center;
-    /* background-image: url('../img/mc_top_dirt.jpg'); */
 }
 
 .ic__resource-counter {

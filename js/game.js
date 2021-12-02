@@ -1,9 +1,10 @@
+import { inventoryMap } from './inventory.js';
+
 /** 2d array representation of the game board */
 const initialMatrix = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0],
@@ -11,10 +12,11 @@ const initialMatrix = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0],
-    [0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 3, 0, 0, 0, 0],
-    [0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 3, 0, 0, 0, 0],
-    [0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 4, 0, 0, 0, 0, 3, 0, 0, 0, 4],
+    [0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 4, 4, 0, 0, 0, 3, 0, 0, 0, 0],
+    [0, 0, 0, 0, 3, 3, 3, 0, 0, 0, 4, 4, 0, 0, 0, 3, 0, 0, 0, 0],
+    [0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 4, 4, 0, 0, 0, 3, 0, 0, 0, 4],
     [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+    [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
     [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
     [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
     [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
@@ -27,52 +29,50 @@ export const Resource = {
     CLOUD: 1,
     TREE: 2,
     TRUNK: 3,
-    STONE: 4,
+    ROCK: 4,
     GRASS: 5,
     DIRT: 6,
+    // WATER: 7, !TODO implement water
 };
 
 export const resourceMap = new Map();
 
-function initGame() {
+export function initGameConstants() {
     for (const [key, value] of Object.entries(Resource)) {
         let resourceObj = {
             name: key,
             value: value,
+            maxItems: 0 /* TODO: update while drawing */,
+            minItems: 0,
+            classList: [],
         };
 
-        let list;
         switch (value) {
             case Resource.SKY:
-                list = ['sky'];
+                resourceObj.classList = ['sky'];
                 break;
             case Resource.CLOUD:
-                list = ['cloud'];
+                resourceObj.classList = ['cloud'];
                 break;
             case Resource.TREE:
-                list = ['tile__image', 'tree'];
+                resourceObj.classList = ['tile__image', 'tree'];
                 break;
             case Resource.TRUNK:
-                list = ['tile__image', 'trunk'];
+                resourceObj.classList = ['tile__image', 'trunk'];
                 break;
-            case Resource.STONE:
-                list = ['tile__image', 'stone'];
+            case Resource.ROCK:
+                resourceObj.classList = ['tile__image', 'rock'];
                 break;
             case Resource.GRASS:
-                list = ['tile__image', 'grass'];
+                resourceObj.classList = ['tile__image', 'grass'];
                 break;
             case Resource.DIRT:
-                list = ['tile__image', 'dirt'];
-                break;
-            default:
-                list = [];
+                resourceObj.classList = ['tile__image', 'dirt'];
                 break;
         }
-        resourceObj['classList'] = list;
         resourceMap.set(value, resourceObj);
     }
 }
-initGame();
 
 export function getInitialMatrixCopy() {
     return initialMatrix.map((arr) => arr.slice());
