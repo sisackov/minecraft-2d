@@ -4,7 +4,7 @@
 https://minecraft-2d-game.netlify.app/
 
 
-## Plan-out
+## Work-Plan
 
 ### HTML/CSS
 
