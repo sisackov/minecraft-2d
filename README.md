@@ -1,6 +1,10 @@
 # minecraft-2d
 
-## Plan-out
+## Netlify
+https://minecraft-2d-game.netlify.app/
+
+
+## Work-Plan
 
 ### HTML/CSS
 
