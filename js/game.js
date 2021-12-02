@@ -31,6 +31,7 @@ export const Resource = {
     GRASS: 5,
     DIRT: 6,
 };
+
 export const resourceMap = new Map();
 
 function initGame() {
@@ -71,7 +72,26 @@ function initGame() {
         resourceMap.set(value, resourceObj);
     }
 }
-
 initGame();
 
-console.log(resourceMap);
+export function getInitialMatrixCopy() {
+    return initialMatrix.map((arr) => arr.slice());
+}
+
+export function createGridElement(row, col, resourceType) {
+    const gridElement = document.createElement('div');
+    let resourceObj = resourceMap.get(resourceType);
+    for (const cls of resourceObj.classList) {
+        gridElement.classList.add(cls);
+    }
+    gridElement.dataset.row = row;
+    gridElement.dataset.col = col;
+    gridElement.dataset.resource = resourceType;
+    gridElement.addEventListener('click', onGridElementClick);
+    return gridElement;
+}
+
+function onGridElementClick(event) {
+    const gridElement = event.target;
+    console.log(gridElement.dataset.row, gridElement.dataset.col);
+}
