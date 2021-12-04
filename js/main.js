@@ -1,13 +1,12 @@
 import {
     getInitialMatrixCopy,
     initGameConstants,
-    // RESOURCE,
     resourceMap,
     createGridElement,
 } from './game.js';
 import {
     initInventoryConstants,
-    inventoryMap,
+    toolsMap,
     createToolElement,
     createResourceElement,
 } from './inventory.js';
@@ -22,25 +21,23 @@ let matrix = getInitialMatrixCopy();
 function drawGame() {
     for (let row = 0; row < matrix.length; row++) {
         for (let col = 0; col < matrix[row].length; col++) {
-            let resourceType = matrix[row][col];
-            gameGrid.appendChild(createGridElement(row, col, resourceType));
-            resourceMap.get(resourceType).maxItems++;
+            gameGrid.appendChild(createGridElement(matrix[row][col], row, col));
+            resourceMap.get(matrix[row][col]).maxItems++;
         }
     }
 }
 
 function drawInventory() {
-    inventoryMap.forEach((inventoryItem) => {
-        if (inventoryItem.isTool) {
-            inventoryToolGrid.appendChild(createToolElement(inventoryItem));
-        } else if (inventoryItem.isMineable) {
-            inventoryResourceGrid.appendChild(
-                createResourceElement(inventoryItem)
-            );
-        }
+    toolsMap.forEach((tool) => {
+        inventoryToolGrid.appendChild(createToolElement(tool));
     });
 
-    console.log(inventoryResourceGrid);
+    resourceMap.forEach((resource) => {
+        console.log(resource);
+        if (resource.isMineable) {
+            inventoryResourceGrid.appendChild(createResourceElement(resource));
+        }
+    });
 }
 
 function initConstants() {

@@ -116,14 +116,17 @@
     background-image: url('../images/axe.png');
 }
 
+.ic__resource {
+    display: flex;
+    justify-content: space-between;
+}
+
 .ic__resource-image {
+    cursor: pointer;
     height: 6vmin;
     width: 6vmin;
     background-size: cover;
     background-position: center;
-
-    display: flex;
-    justify-content: space-between;
 }
 
 .ic__resource-counter {
