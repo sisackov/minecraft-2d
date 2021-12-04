@@ -9,6 +9,9 @@ function ToolItem(name) {
 
 export const toolsMap = new Map();
 
+export let selectedInventoryItem;
+let selectedToolElement;
+
 function initInventoryTools() {
     for (const key in TOOL) {
         toolsMap.set(key, new ToolItem(key));
@@ -16,7 +19,6 @@ function initInventoryTools() {
 }
 
 export function initInventoryConstants() {
-    //TODO -do i need this method?
     initInventoryTools();
 }
 
@@ -54,27 +56,47 @@ export function createResourceElement(resourceItem) {
 
 function onToolClick(e) {
     let toolElement = e.target;
+    clearPreviouslySelectedTool();
     setSelectedToolStyle(toolElement, true);
+    selectedInventoryItem = toolElement.dataset.tool;
+    selectedToolElement = toolElement;
 }
 
-/**
- *
- * @param {Element} toolElement
- * @param {*} isActive
- */
+function clearPreviouslySelectedTool() {
+    if (selectedToolElement) {
+        selectedToolElement.classList.remove('ic__tool--active');
+        selectedToolElement = undefined;
+    }
+}
+
 function setSelectedToolStyle(toolElement, isActive) {
-    // clearElementClasses(toolElement);
     if (isActive) {
         toolElement.classList.remove('ic__tool--wrong');
         toolElement.classList.add('ic__tool--active');
     } else {
         toolElement.classList.remove('ic__tool--active');
         toolElement.classList.add('ic__tool--wrong');
-        setTimeout(setSelectedToolStyle, 700, toolElement, true); //clears the wrong style after a while
+        setTimeout(setSelectedToolStyle, 600, toolElement, true); //clears the wrong style after a while
     }
 }
 
 function onResourceClick(e) {
     let toolElement = e.target;
     toolElement.style.backgroundColor = '#00ff00';
+}
+
+/**
+ *
+ * @param {Element}
+ * @param {*} isActive
+ */
+function setSelectedResourceStyle(resourceElement, isActive) {
+    if (isActive) {
+        resourceElement.classList.remove('ic__resource--wrong');
+        resourceElement.classList.add('ic__resource--active');
+    } else {
+        resourceElement.classList.remove('ic__resource--active');
+        resourceElement.classList.add('ic__resource--wrong');
+        setTimeout(setSelectedresourceStyle, 600, resourceElement, true); //clears the wrong style after a while
+    }
 }
