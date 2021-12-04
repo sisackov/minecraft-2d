@@ -135,13 +135,18 @@
     width: 6vmin;
     background-size: cover;
     background-position: center;
+    border: 0.5vmin solid #ccc;
+}
+
+.ic__resource--active {
+    border: 0.5vmin solid blue;
 }
 
 .ic__resource-counter {
     margin-left: 0.5vmin;
     color: orange;
     align-self: flex-end;
-    font-size: 1.5rem;
+    font-size: 3vmin;
     font-weight: 600;
 
     justify-self: flex-end;

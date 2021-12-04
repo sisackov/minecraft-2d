@@ -11,6 +11,7 @@ export const toolsMap = new Map();
 
 export let selectedInventoryItem;
 let selectedToolElement;
+let selectedResourceElement;
 
 function initInventoryTools() {
     for (const key in TOOL) {
@@ -54,19 +55,24 @@ export function createResourceElement(resourceItem) {
     return resourceDiv;
 }
 
-function onToolClick(e) {
-    let toolElement = e.target;
-    clearPreviouslySelectedTool();
-    setSelectedToolStyle(toolElement, true);
-    selectedInventoryItem = toolElement.dataset.tool;
-    selectedToolElement = toolElement;
-}
-
-function clearPreviouslySelectedTool() {
+function clearPreviouslySelectedItem() {
     if (selectedToolElement) {
         selectedToolElement.classList.remove('ic__tool--active');
         selectedToolElement = undefined;
     }
+    if (selectedResourceElement) {
+        selectedResourceElement.classList.remove('ic__resource--active');
+        selectedResourceElement = undefined;
+    }
+}
+
+function onToolClick(e) {
+    let toolElement = e.target;
+    clearPreviouslySelectedItem();
+    setSelectedToolStyle(toolElement, true);
+    selectedInventoryItem = toolElement.dataset.tool;
+    selectedToolElement = toolElement;
+    selectedResourceElement = undefined;
 }
 
 function setSelectedToolStyle(toolElement, isActive) {
@@ -81,22 +87,9 @@ function setSelectedToolStyle(toolElement, isActive) {
 }
 
 function onResourceClick(e) {
-    let toolElement = e.target;
-    toolElement.style.backgroundColor = '#00ff00';
-}
-
-/**
- *
- * @param {Element}
- * @param {*} isActive
- */
-function setSelectedResourceStyle(resourceElement, isActive) {
-    if (isActive) {
-        resourceElement.classList.remove('ic__resource--wrong');
-        resourceElement.classList.add('ic__resource--active');
-    } else {
-        resourceElement.classList.remove('ic__resource--active');
-        resourceElement.classList.add('ic__resource--wrong');
-        setTimeout(setSelectedresourceStyle, 600, resourceElement, true); //clears the wrong style after a while
-    }
+    let resourceElement = e.target;
+    clearPreviouslySelectedItem();
+    resourceElement.classList.add('ic__resource--active');
+    selectedInventoryItem = resourceElement.dataset.resource;
+    selectedResourceElement = resourceElement;
 }
