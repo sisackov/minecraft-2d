@@ -1,10 +1,10 @@
 import {
-    getInitialMatrixCopy,
     initGameConstants,
     resourceMap,
     createGridElement,
     GRID_ROWS,
     GRID_COLS,
+    getCurrentMatrix,
 } from './game.js';
 import {
     initInventoryConstants,
@@ -17,14 +17,13 @@ const gameGrid = document.querySelector('.game-container');
 const inventoryToolGrid = document.querySelector('.ic__tool-container');
 const inventoryResourceGrid = document.querySelector('.ic__resource-container');
 
-let matrix = [];
-
 function initConstants() {
     initGameConstants();
     initInventoryConstants();
 }
 
 function drawGame() {
+    let matrix = getCurrentMatrix();
     for (let row = 0; row < GRID_ROWS; row++) {
         for (let col = 0; col < GRID_COLS; col++) {
             gameGrid.appendChild(createGridElement(matrix[row][col], row, col));
@@ -39,7 +38,6 @@ function drawInventory() {
     });
 
     resourceMap.forEach((resource) => {
-        console.log(resource);
         if (resource.isMineable) {
             inventoryResourceGrid.appendChild(createResourceElement(resource));
         }
@@ -47,7 +45,6 @@ function drawInventory() {
 }
 
 function init() {
-    matrix = getInitialMatrixCopy();
     initConstants();
     drawGame();
     drawInventory();

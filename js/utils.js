@@ -7,3 +7,16 @@ export function clearElementClasses(element) {
         element.classList.remove(c);
     });
 }
+
+/**
+ * method to copy 2D array
+ */
+export function cloneArray(array) {
+    return array.map((arr) => arr.slice());
+}
+
+export function prettyPrintArray(array) {
+    array.forEach((arr) => {
+        console.log(arr);
+    });
+}

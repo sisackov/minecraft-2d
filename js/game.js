@@ -1,4 +1,12 @@
-import { toolsMap } from './inventory.js';
+import {
+    toolsMap,
+    selectedInventoryItem,
+    isToolSelected,
+    isResourceSelected,
+    setSelectedToolStyle,
+    updateInventoryItemAmount,
+} from './inventory.js';
+import { clearElementClasses, cloneArray, prettyPrintArray } from './utils.js';
 
 /** 2d array representation of the game board */
 const initialMatrix = [
@@ -43,6 +51,8 @@ export const TOOL = {
 
 export const GRID_ROWS = 20;
 export const GRID_COLS = 20;
+let currentMatrix = [];
+export const resourceMap = new Map();
 
 function ResourceItem(name, type) {
     this.name = name;
@@ -58,16 +68,16 @@ function ResourceItem(name, type) {
     this.amountCollected = 0;
 }
 
-export const resourceMap = new Map();
-
 export function initGameConstants() {
+    currentMatrix = cloneArray(initialMatrix);
+    resourceMap.clear();
     for (const [key, value] of Object.entries(RESOURCE)) {
         resourceMap.set(value, new ResourceItem(key, value));
     }
 }
 
-export function getInitialMatrixCopy() {
-    return initialMatrix.map((arr) => arr.slice());
+export function getCurrentMatrix() {
+    return currentMatrix;
 }
 
 export function createGridElement(resourceType, row, col) {
@@ -80,7 +90,40 @@ export function createGridElement(resourceType, row, col) {
     return gridElement;
 }
 
+function updateGridElement(gridElement, resourceType, row, col) {
+    clearElementClasses(gridElement);
+    let resourceItem = resourceMap.get(resourceType);
+    gridElement.classList.add(...resourceItem.gridClassList);
+
+    currentMatrix[row][col] = resourceType; //update game state
+}
+
 function onGridElementClick(event) {
     const gridElement = event.target;
-    console.log(gridElement.dataset.x, gridElement.dataset.y);
+    const resourceType = parseInt(gridElement.dataset.resourceType);
+
+    if (isToolSelected()) {
+        const tool = toolsMap.get(selectedInventoryItem);
+        if (tool.mineableItems.includes(resourceType)) {
+            updateInventoryItemAmount(resourceType, 1);
+            updateGridElement(
+                gridElement,
+                RESOURCE.SKY,
+                gridElement.dataset.x,
+                gridElement.dataset.y
+            );
+        } else {
+            setSelectedToolStyle(false); //wrong tool for the job
+        }
+    } else if (isResourceSelected()) {
+        if (resourceMap.get(resourceType).amountCollected > 0) {
+            updateInventoryItemAmount(resourceType, -1);
+            updateGridElement(
+                gridElement,
+                resourceType,
+                gridElement.dataset.x,
+                gridElement.dataset.y
+            );
+        }
+    }
 }

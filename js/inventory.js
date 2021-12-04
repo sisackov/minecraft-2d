@@ -1,4 +1,4 @@
-import { RESOURCE, TOOL } from './game.js';
+import { RESOURCE, resourceMap, TOOL } from './game.js';
 import { clearElementClasses } from './utils.js';
 
 function ToolItem(name) {
@@ -34,7 +34,7 @@ export function createToolElement(toolItem) {
 function createResourceDivElement(resourceItem) {
     let resourceElement = document.createElement('div');
     resourceElement.classList.add(...resourceItem.inventoryClassList);
-    resourceElement.dataset.resource = resourceItem.name;
+    resourceElement.dataset.resourceType = resourceItem.type;
     resourceElement.addEventListener('click', onResourceClick);
     return resourceElement;
 }
@@ -42,7 +42,7 @@ function createResourceDivElement(resourceItem) {
 function createResourceCounterElement(resourceItem) {
     let span = document.createElement('span');
     span.classList.add('ic__resource-counter');
-    span.dataset.resource = resourceItem.name; //TODO -do i need this?
+    span.dataset.resourceType = resourceItem.type;
     span.textContent = resourceItem.amountCollected;
     return span;
 }
@@ -69,20 +69,20 @@ function clearPreviouslySelectedItem() {
 function onToolClick(e) {
     let toolElement = e.target;
     clearPreviouslySelectedItem();
-    setSelectedToolStyle(toolElement, true);
     selectedInventoryItem = toolElement.dataset.tool;
     selectedToolElement = toolElement;
     selectedResourceElement = undefined;
+    setSelectedToolStyle(true);
 }
 
-function setSelectedToolStyle(toolElement, isActive) {
+export function setSelectedToolStyle(isActive) {
     if (isActive) {
-        toolElement.classList.remove('ic__tool--wrong');
-        toolElement.classList.add('ic__tool--active');
+        selectedToolElement.classList.remove('ic__tool--wrong');
+        selectedToolElement.classList.add('ic__tool--active');
     } else {
-        toolElement.classList.remove('ic__tool--active');
-        toolElement.classList.add('ic__tool--wrong');
-        setTimeout(setSelectedToolStyle, 600, toolElement, true); //clears the wrong style after a while
+        selectedToolElement.classList.remove('ic__tool--active');
+        selectedToolElement.classList.add('ic__tool--wrong');
+        setTimeout(setSelectedToolStyle, 600, selectedToolElement, true); //clears the wrong style after a while
     }
 }
 
@@ -90,6 +90,23 @@ function onResourceClick(e) {
     let resourceElement = e.target;
     clearPreviouslySelectedItem();
     resourceElement.classList.add('ic__resource--active');
-    selectedInventoryItem = resourceElement.dataset.resource;
+    selectedInventoryItem = resourceElement.dataset.resourceType;
     selectedResourceElement = resourceElement;
+}
+
+export function isToolSelected() {
+    return selectedToolElement !== undefined;
+}
+
+export function isResourceSelected() {
+    return selectedResourceElement !== undefined;
+}
+
+export function updateInventoryItemAmount(resourceType, amount) {
+    let span = document.querySelector(
+        `span[data-resource-type="${resourceType}"]`
+    );
+    let resourceItem = resourceMap.get(resourceType);
+    resourceItem.amountCollected += amount;
+    span.textContent = resourceItem.amountCollected;
 }
