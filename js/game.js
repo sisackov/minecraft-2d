@@ -41,6 +41,9 @@ export const TOOL = {
     AXE: [RESOURCE.TREE, RESOURCE.TRUNK],
 };
 
+export const GRID_ROWS = 20;
+export const GRID_COLS = 20;
+
 function ResourceItem(name, type) {
     this.name = name;
     this.type = type;
@@ -70,7 +73,8 @@ export function getInitialMatrixCopy() {
 export function createGridElement(resourceType, row, col) {
     const gridElement = document.createElement('div');
     gridElement.classList.add(...resourceMap.get(resourceType).gridClassList);
-    gridElement.dataset.position = { x: row, y: col };
+    gridElement.dataset.x = row; //TODO - do we need this?
+    gridElement.dataset.y = col;
     gridElement.dataset.resourceType = resourceType;
     gridElement.addEventListener('click', onGridElementClick);
     return gridElement;
@@ -78,8 +82,5 @@ export function createGridElement(resourceType, row, col) {
 
 function onGridElementClick(event) {
     const gridElement = event.target;
-    console.dir(
-        gridElement.style.gridRowStart,
-        gridElement.style.gridColumnStart
-    );
+    console.log(gridElement.dataset.x, gridElement.dataset.y);
 }

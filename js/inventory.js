@@ -1,4 +1,5 @@
 import { RESOURCE, TOOL } from './game.js';
+import { clearElementClasses } from './utils.js';
 
 function ToolItem(name) {
     this.name = name;
@@ -53,7 +54,24 @@ export function createResourceElement(resourceItem) {
 
 function onToolClick(e) {
     let toolElement = e.target;
-    toolElement.style.backgroundColor = '#00ff00';
+    setSelectedToolStyle(toolElement, true);
+}
+
+/**
+ *
+ * @param {Element} toolElement
+ * @param {*} isActive
+ */
+function setSelectedToolStyle(toolElement, isActive) {
+    // clearElementClasses(toolElement);
+    if (isActive) {
+        toolElement.classList.remove('ic__tool--wrong');
+        toolElement.classList.add('ic__tool--active');
+    } else {
+        toolElement.classList.remove('ic__tool--active');
+        toolElement.classList.add('ic__tool--wrong');
+        setTimeout(setSelectedToolStyle, 700, toolElement, true); //clears the wrong style after a while
+    }
 }
 
 function onResourceClick(e) {

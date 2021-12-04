@@ -116,6 +116,14 @@
     background-image: url('../images/axe.png');
 }
 
+.ic__tool--active {
+    background-color: blue;
+}
+
+.ic__tool--wrong {
+    background-color: red;
+}
+
 .ic__resource {
     display: flex;
     justify-content: space-between;
