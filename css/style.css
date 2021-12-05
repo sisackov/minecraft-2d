@@ -20,7 +20,7 @@
 }
 
 .main-title {
-    width: 100vmin;
+    width: 90vmin;
     height: 50vmin;
     background-image: url('../images/minecraft_title.png');
     background-size: cover;
@@ -59,8 +59,6 @@
 }
 
 .inventory-container {
-    /* justify-self: flex-end;
-    align-self: flex-end; */
     background-color: #233;
     width: 40vmin;
     height: 100vmin;
@@ -200,15 +198,13 @@
 }
 
 .ic-button {
-    line-height: 1.9rem;
-    font-size: 1.1rem;
+    font-size: 1.2em;
     font-weight: 600;
 
-    margin-bottom: 2vmin;
-    padding: 0.08rem;
-    width: 10rem;
+    margin: 5px;
+    padding: 0.7em 1.5em 0.7em;
 
-    border-radius: 0.5rem;
+    border-radius: 0.5em;
     background-color: black;
     color: white;
 }

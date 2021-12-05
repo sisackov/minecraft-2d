@@ -1,0 +1,44 @@
+@media (max-width: 1280px) {
+    .main-wrapper {
+        justify-content: center;
+    }
+
+    .page-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .inventory-container {
+        flex-direction: row;
+
+        width: 100vmin;
+        height: 30vmin;
+    }
+
+    .ic__tool-container {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        align-self: center;
+    }
+
+    .ic__resource-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+
+        gap: 2vmin;
+        align-self: center;
+    }
+
+    .ic-button {
+        font-size: 0.8em;
+        font-weight: 600;
+
+        margin: 5px;
+        padding: 0.7em 1.5em 0.7em;
+
+        border-radius: 0.5em;
+        background-color: black;
+        color: white;
+    }
+}
