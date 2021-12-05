@@ -29,3 +29,12 @@ export function clearChildren(element) {
         element.removeChild(element.firstChild);
     }
 }
+
+export function retrieveAllLocalStorageItems() {
+    let keys = Object.keys(localStorage);
+    let itemsMap = new Map();
+    keys.forEach((key) => {
+        itemsMap.set(key, localStorage.getItem(key));
+    });
+    return itemsMap;
+}
