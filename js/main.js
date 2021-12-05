@@ -144,7 +144,6 @@ confirmLoadButton.addEventListener('click', () => {
 });
 
 function updateResourceState(loadedResources) {
-    console.log(loadedResources);
     resourceMap.forEach((resource) => {
         if (resource.isMineable) {
             updateInventoryItemAmount(

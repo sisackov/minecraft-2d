@@ -1,5 +1,4 @@
-import { RESOURCE, resourceMap, TOOL } from './game.js';
-import { clearElementClasses } from './utils.js';
+import { resourceMap, TOOL } from './game.js';
 
 function ToolItem(name) {
     this.name = name;

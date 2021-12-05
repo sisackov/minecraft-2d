@@ -7,7 +7,7 @@ import {
     updateInventoryItemAmount,
     setSelectedResourceStyle,
 } from './inventory.js';
-import { clearElementClasses, cloneArray, prettyPrintArray } from './utils.js';
+import { clearElementClasses } from './utils.js';
 
 /** 2d array representation of the game board */
 export const initialMatrix = [
@@ -50,9 +50,12 @@ export const TOOL = {
     AXE: [RESOURCE.TREE, RESOURCE.TRUNK],
 };
 
-export const GRID_ROWS = 20;
-export const GRID_COLS = 20;
+export const GRID_ROWS = initialMatrix.length;
+export const GRID_COLS = initialMatrix[0].length;
+
 let currentMatrix = [];
+
+//a map of resource types to resource items
 export const resourceMap = new Map();
 
 function ResourceItem(name, type) {

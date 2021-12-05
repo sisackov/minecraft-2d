@@ -30,6 +30,10 @@ export function clearChildren(element) {
     }
 }
 
+/**
+ *
+ * @returns {Map} a map of all the keys and values in local storage
+ */
 export function retrieveAllLocalStorageItems() {
     let keys = Object.keys(localStorage);
     let itemsMap = new Map();
