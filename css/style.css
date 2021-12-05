@@ -109,10 +109,14 @@
     background-image: url('../images/dirt.jpg');
 }
 
+.water {
+    background-image: url('../images/water.jpg');
+}
+
 .ic__tool-container {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     gap: 1.5vmin;
     align-self: flex-start;
     margin-left: 5vmin;
@@ -147,6 +151,10 @@
 
 .axe {
     background-image: url('../images/axe.png');
+}
+
+.bucket {
+    background-image: url('../images/bucket.png');
 }
 
 .ic__tool--active {
@@ -192,22 +200,33 @@
 .ic__button-container {
     justify-self: flex-end;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.5vmin;
 }
 
 .ic-button {
-    font-size: 1.2em;
-    font-weight: 600;
+    height: 6vmin;
+    width: 6vmin;
+    background-size: cover;
+    background-position: center;
+    background-color: darkslategrey;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
 
-    margin: 5px;
-    padding: 0.7em 1.5em 0.7em;
-
-    border-radius: 0.5em;
-    background-color: black;
-    color: white;
+.reset {
+    background-image: url('../images/reset.png');
+}
+.random {
+    background-image: url('../images/random.png');
+}
+.save {
+    background-image: url('../images/save.png');
+}
+.load {
+    background-image: url('../images/load.png');
 }
 
 /* The Modal (background) */

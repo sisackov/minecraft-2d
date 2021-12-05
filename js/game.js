@@ -41,13 +41,14 @@ export const RESOURCE = {
     ROCK: 6,
     GRASS: 7,
     DIRT: 8,
-    // WATER: 7, !TODO implement water
+    WATER: 9, //!TODO implement water
 };
 
 export const TOOL = {
     PICKAXE: [RESOURCE.ROCK],
     SHOVEL: [RESOURCE.DIRT, RESOURCE.GRASS],
     AXE: [RESOURCE.TREE, RESOURCE.TRUNK],
+    BUCKET: [RESOURCE.WATER],
 };
 
 export const GRID_ROWS = initialMatrix.length;
