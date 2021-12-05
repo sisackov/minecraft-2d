@@ -12,10 +12,12 @@ import {
     createToolElement,
     createResourceElement,
 } from './inventory.js';
+import { clearChildren } from './utils.js';
 
 const gameGrid = document.querySelector('.game-container');
 const inventoryToolGrid = document.querySelector('.ic__tool-container');
 const inventoryResourceGrid = document.querySelector('.ic__resource-container');
+const resetButton = document.querySelector('#reset-button');
 
 function initConstants() {
     initGameConstants();
@@ -51,3 +53,10 @@ function init() {
 }
 
 init();
+
+resetButton.addEventListener('click', () => {
+    clearChildren(gameGrid);
+    clearChildren(inventoryToolGrid);
+    clearChildren(inventoryResourceGrid);
+    init();
+});

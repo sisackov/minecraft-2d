@@ -4,12 +4,46 @@
     padding: 0;
 }
 
+.main-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    background: url('../images/minecraft-dirt.jpg') no-repeat center center
+        fixed;
+    background-size: cover;
+
+    overflow: hidden;
+}
+
+.main-title {
+    width: 100vmin;
+    height: 50vmin;
+    background-image: url('../images/minecraft_title.png');
+    background-size: cover;
+}
+
+.start-game-button {
+    appearance: button;
+    text-decoration: none;
+    color: initial;
+
+    font-size: 3rem;
+    font-family: 800;
+    padding: 5px;
+
+    border: 1px solid #000;
+    background-color: white;
+}
+
 .page-wrapper {
     height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;
-    /* align-items: center; */
     margin: 0;
     background-color: sandybrown;
 }

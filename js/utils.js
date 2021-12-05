@@ -20,3 +20,12 @@ export function prettyPrintArray(array) {
         console.log(arr);
     });
 }
+
+/**
+ * method to empty an element of all its children
+ */
+export function clearChildren(element) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+}
