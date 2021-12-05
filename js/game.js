@@ -10,7 +10,7 @@ import {
 import { clearElementClasses, cloneArray, prettyPrintArray } from './utils.js';
 
 /** 2d array representation of the game board */
-const initialMatrix = [
+export const initialMatrix = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -69,8 +69,11 @@ function ResourceItem(name, type) {
     this.amountCollected = 0;
 }
 
+export function setCurrentMatrix(matrix) {
+    currentMatrix = matrix;
+}
+
 export function initGameConstants() {
-    currentMatrix = cloneArray(initialMatrix);
     resourceMap.clear();
     for (const [key, value] of Object.entries(RESOURCE)) {
         resourceMap.set(value, new ResourceItem(key, value));
@@ -84,7 +87,7 @@ export function getCurrentMatrix() {
 export function createGridElement(resourceType, row, col) {
     const gridElement = document.createElement('div');
     gridElement.classList.add(...resourceMap.get(resourceType).gridClassList);
-    gridElement.dataset.x = row; //TODO - do we need this?
+    gridElement.dataset.x = row;
     gridElement.dataset.y = col;
     gridElement.dataset.resourceType = resourceType;
     gridElement.addEventListener('click', onGridElementClick);
@@ -95,6 +98,7 @@ function updateGridElement(gridElement, resourceType, row, col) {
     clearElementClasses(gridElement);
     let resourceItem = resourceMap.get(resourceType);
     gridElement.classList.add(...resourceItem.gridClassList);
+    gridElement.dataset.resourceType = resourceType;
 
     currentMatrix[row][col] = resourceType; //update game state
 }

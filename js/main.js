@@ -1,25 +1,32 @@
 import {
+    initialMatrix,
     initGameConstants,
     resourceMap,
     createGridElement,
     GRID_ROWS,
     GRID_COLS,
     getCurrentMatrix,
+    setCurrentMatrix,
 } from './game.js';
 import {
     initInventoryConstants,
     toolsMap,
     createToolElement,
     createResourceElement,
+    updateInventoryItemAmount,
 } from './inventory.js';
-import { clearChildren, retrieveAllLocalStorageItems } from './utils.js';
+import {
+    clearChildren,
+    retrieveAllLocalStorageItems,
+    cloneArray,
+} from './utils.js';
 
 const gameGrid = document.querySelector('.game-container');
 const inventoryToolGrid = document.querySelector('.ic__tool-container');
 const inventoryResourceGrid = document.querySelector('.ic__resource-container');
 const resetButton = document.querySelector('#reset-button');
 const saveButton = document.querySelector('#save-button');
-// const loadButton = document.querySelector('#load-button');
+const loadButton = document.querySelector('#load-button');
 
 function initConstants() {
     initGameConstants();
@@ -54,35 +61,104 @@ function init() {
     drawInventory();
 }
 
-init();
-
-// Initialize the local storage
-localStorage.clear();
-localStorage.setItem('InitialMatrix', JSON.stringify(getCurrentMatrix()));
-// console.log(retrieveAllLocalStorageItems());
-
-resetButton.addEventListener('click', () => {
+function resetGame(isReset = true) {
     clearChildren(gameGrid);
     clearChildren(inventoryToolGrid);
     clearChildren(inventoryResourceGrid);
+    if (isReset) {
+        setCurrentMatrix(cloneArray(initialMatrix));
+    }
     init();
-});
+}
+
+resetButton.addEventListener('click', resetGame);
+
+resetGame(); //draws the initial game
+
+//*****************************************************************************
+// Save Functionality
+//*****************************************************************************
+
+// Initialize the local storage
+localStorage.clear();
+saveGame('InitialMatrix');
 
 saveButton.addEventListener('click', () => {
-    localStorage.setItem(
-        new Date().toJSON(),
-        JSON.stringify(getCurrentMatrix())
-    );
+    saveGame(new Date().getTime());
 });
 
-/* TODO
-loadButton.addEventListener('click', () => {
-    const loadMap = retrieveAllLocalStorageItems();
-    let ul = document.createElement('ul');
-    loadMap.forEach((item) => {
-        let li = document.createElement('li');
-        li.innerText = item;
-        ul.appendChild(li);
+function saveGame(key) {
+    let resourceArray = [];
+    resourceMap.forEach((resource) => {
+        resourceArray[resource.type] = resource.amountCollected;
     });
-    document.body.appendChild(ul);
-}); */
+    let saved = {
+        matrix: getCurrentMatrix(),
+        resources: resourceArray,
+    };
+    localStorage.setItem(key, JSON.stringify(saved));
+}
+
+//*****************************************************************************
+// Load Functionality
+//*****************************************************************************
+loadButton.addEventListener('click', displayLoadModal);
+
+const modal = document.querySelector('.modal');
+const confirmLoadButton = document.querySelector('#confirm-load-btn');
+let selectedLoadKey = '';
+let selectedLoadLink;
+
+function displayLoadModal() {
+    modal.style.display = 'block';
+    const ulElement = document.querySelector('.modal__list');
+    clearChildren(ulElement);
+    const loadMap = retrieveAllLocalStorageItems();
+    loadMap.forEach((value, key) => {
+        let timestamp = parseInt(key);
+        let li = document.createElement('li');
+        li.innerText = timestamp ? new Date(timestamp).toLocaleString() : key;
+        selectedLoadKey = key;
+        li.addEventListener('click', onLoadLinkSelected);
+        ulElement.appendChild(li);
+    });
+}
+
+function onLoadLinkSelected(e) {
+    if (selectedLoadLink) {
+        selectedLoadLink.classList.remove('modal__list--selected');
+    }
+    selectedLoadLink = e.target;
+    selectedLoadLink.classList.add('modal__list--selected');
+}
+
+confirmLoadButton.addEventListener('click', () => {
+    if (selectedLoadKey !== '') {
+        let loadedState = JSON.parse(localStorage.getItem(selectedLoadKey));
+        setCurrentMatrix(loadedState.matrix);
+        resetGame(false);
+        updateResourceState(loadedState.resources);
+
+        closeModal();
+    }
+});
+
+function updateResourceState(loadedResources) {
+    console.log(loadedResources);
+    resourceMap.forEach((resource) => {
+        if (resource.isMineable) {
+            updateInventoryItemAmount(
+                resource.type,
+                loadedResources[resource.type]
+            );
+        }
+    });
+}
+
+function closeModal() {
+    modal.style.display = 'none';
+    selectedLoadKey = '';
+    selectedLoadLink = undefined;
+}
+
+document.querySelector('.close-modal').addEventListener('click', closeModal);
