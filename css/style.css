@@ -142,6 +142,10 @@
     border: 0.5vmin solid blue;
 }
 
+.ic__resource--wrong {
+    border: 0.5vmin solid red;
+}
+
 .ic__resource-counter {
     margin-left: 0.5vmin;
     color: orange;

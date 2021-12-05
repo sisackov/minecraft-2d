@@ -82,7 +82,7 @@ export function setSelectedToolStyle(isActive) {
     } else {
         selectedToolElement.classList.remove('ic__tool--active');
         selectedToolElement.classList.add('ic__tool--wrong');
-        setTimeout(setSelectedToolStyle, 600, selectedToolElement, true); //clears the wrong style after a while
+        setTimeout(setSelectedToolStyle, 600, true); //clears the wrong style after a while
     }
 }
 
@@ -92,6 +92,17 @@ function onResourceClick(e) {
     resourceElement.classList.add('ic__resource--active');
     selectedInventoryItem = resourceElement.dataset.resourceType;
     selectedResourceElement = resourceElement;
+}
+
+export function setSelectedResourceStyle(isActive) {
+    if (isActive) {
+        selectedResourceElement.classList.remove('ic__resource--wrong');
+        selectedResourceElement.classList.add('ic__resource--active');
+    } else {
+        selectedResourceElement.classList.remove('ic__resource--active');
+        selectedResourceElement.classList.add('ic__resource--wrong');
+        setTimeout(setSelectedResourceStyle, 600, true); //clears the wrong style after a while
+    }
 }
 
 export function isToolSelected() {

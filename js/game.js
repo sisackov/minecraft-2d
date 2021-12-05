@@ -5,6 +5,7 @@ import {
     isResourceSelected,
     setSelectedToolStyle,
     updateInventoryItemAmount,
+    setSelectedResourceStyle,
 } from './inventory.js';
 import { clearElementClasses, cloneArray, prettyPrintArray } from './utils.js';
 
@@ -98,32 +99,44 @@ function updateGridElement(gridElement, resourceType, row, col) {
     currentMatrix[row][col] = resourceType; //update game state
 }
 
+function handleToolUse(gridElement) {
+    const resourceType = parseInt(gridElement.dataset.resourceType);
+    const tool = toolsMap.get(selectedInventoryItem);
+    if (tool.mineableItems.includes(resourceType)) {
+        updateInventoryItemAmount(resourceType, 1);
+        updateGridElement(
+            gridElement,
+            RESOURCE.SKY,
+            gridElement.dataset.x,
+            gridElement.dataset.y
+        );
+    } else {
+        setSelectedToolStyle(false); //wrong tool for the job
+    }
+}
+
+function handleResourceUse(gridElement) {
+    const resourceType = parseInt(selectedInventoryItem);
+
+    if (resourceMap.get(resourceType).amountCollected > 0) {
+        updateInventoryItemAmount(resourceType, -1);
+        updateGridElement(
+            gridElement,
+            resourceType,
+            gridElement.dataset.x,
+            gridElement.dataset.y
+        );
+    } else {
+        setSelectedResourceStyle(false); //not enough resources
+    }
+}
+
 function onGridElementClick(event) {
     const gridElement = event.target;
-    const resourceType = parseInt(gridElement.dataset.resourceType);
 
     if (isToolSelected()) {
-        const tool = toolsMap.get(selectedInventoryItem);
-        if (tool.mineableItems.includes(resourceType)) {
-            updateInventoryItemAmount(resourceType, 1);
-            updateGridElement(
-                gridElement,
-                RESOURCE.SKY,
-                gridElement.dataset.x,
-                gridElement.dataset.y
-            );
-        } else {
-            setSelectedToolStyle(false); //wrong tool for the job
-        }
+        handleToolUse(gridElement);
     } else if (isResourceSelected()) {
-        if (resourceMap.get(resourceType).amountCollected > 0) {
-            updateInventoryItemAmount(resourceType, -1);
-            updateGridElement(
-                gridElement,
-                resourceType,
-                gridElement.dataset.x,
-                gridElement.dataset.y
-            );
-        }
+        handleResourceUse(gridElement);
     }
 }
