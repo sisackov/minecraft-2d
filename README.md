@@ -4,6 +4,11 @@
 
 https://minecraft-2d-game.netlify.app/
 
+## TODO
+
+-   add documentation
+-   unify functions
+
 ## Work-Plan
 
 ### HTML/CSS

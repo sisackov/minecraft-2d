@@ -54,6 +54,12 @@ export const TOOL = {
 export const GRID_ROWS = initialMatrix.length;
 export const GRID_COLS = initialMatrix[0].length;
 
+export const TREE_COUNT = 3;
+export const TRUNK_HEIGHT = 4;
+export const TREE_HEIGHT = 3;
+export const TREE_WIDTH = 3;
+export const TREE_SPACE = 6;
+
 let currentMatrix = [];
 
 //a map of resource types to resource items

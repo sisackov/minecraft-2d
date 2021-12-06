@@ -8,6 +8,7 @@ import {
     getCurrentMatrix,
     setCurrentMatrix,
     RESOURCE,
+    TREE_COUNT
 } from './game.js';
 import {
     initInventoryConstants,
@@ -30,6 +31,12 @@ const resetButton = document.querySelector('#reset-button');
 const randomButton = document.querySelector('#random-button');
 const saveButton = document.querySelector('#save-button');
 const loadButton = document.querySelector('#load-button');
+let loadedMatrix;
+const RESET_TYPE = {
+    RESET: 'RESET',
+    RANDOM: 'RANDOM',
+    LOADING: 'LOADING',
+}
 
 function initConstants() {
     initGameConstants();
@@ -64,38 +71,52 @@ function init() {
     drawInventory();
 }
 
-function resetGame(isReset = true) {
+function resetGame(resetType) {
     clearChildren(gameGrid);
     clearChildren(inventoryToolGrid);
     clearChildren(inventoryResourceGrid);
-    if (isReset) {
-        setCurrentMatrix(cloneArray(initialMatrix));
-    } else {
-        setCurrentMatrix(randomGridGenerator());
+    switch (resetType) {
+        case RESET_TYPE.RESET:
+            setCurrentMatrix(cloneArray(initialMatrix));
+            break;
+        case RESET_TYPE.RANDOM:
+            setCurrentMatrix(randomGridGenerator());
+            break;
+        case RESET_TYPE.LOADING:
+            setCurrentMatrix(loadedMatrix);
+            break;
+        default:
+            setCurrentMatrix(randomGridGenerator());
+            break;
     }
 
     init();
 }
 
-resetButton.addEventListener('click', resetGame);
+resetButton.addEventListener('click', () => { resetGame(RESET_TYPE.RESET); });
 
-resetGame(); //draws the initial game
+resetGame(RESET_TYPE.RESET); //draws the initial game
 
-randomButton.addEventListener('click', () => { resetGame(false); });
+randomButton.addEventListener('click', () => { resetGame(RESET_TYPE.RANDOM); });
 
 //*****************************************************************************
 // Save Functionality
 //*****************************************************************************
 
 // Initialize the local storage
-localStorage.clear();
-saveGame('InitialMatrix');
+function initStorage() {
+    if (!localStorage.getItem('Initial Matrix')) {
+        localStorage.clear();
+        saveGame('Initial Matrix');
+    }
+}
+initStorage();
 
 saveButton.addEventListener('click', () => {
     saveGame(new Date().getTime());
 });
 
-function saveGame(key) {
+function saveGame(savedGameKey) {
     let resourceArray = [];
     resourceMap.forEach((resource) => {
         resourceArray[resource.type] = resource.amountCollected;
@@ -104,7 +125,7 @@ function saveGame(key) {
         matrix: getCurrentMatrix(),
         resources: resourceArray,
     };
-    localStorage.setItem(key, JSON.stringify(saved));
+    localStorage.setItem(savedGameKey, JSON.stringify(saved));
 }
 
 //*****************************************************************************
@@ -126,7 +147,7 @@ function displayLoadModal() {
         let timestamp = parseInt(key);
         let li = document.createElement('li');
         li.innerText = timestamp ? new Date(timestamp).toLocaleString() : key;
-        selectedLoadKey = key;
+        li.dataset.key = key;
         li.addEventListener('click', onLoadLinkSelected);
         ulElement.appendChild(li);
     });
@@ -138,13 +159,14 @@ function onLoadLinkSelected(e) {
     }
     selectedLoadLink = e.target;
     selectedLoadLink.classList.add('modal__list--selected');
+    selectedLoadKey = e.target.dataset.key;
 }
 
 confirmLoadButton.addEventListener('click', () => {
     if (selectedLoadKey !== '') {
         let loadedState = JSON.parse(localStorage.getItem(selectedLoadKey));
-        setCurrentMatrix(loadedState.matrix);
-        resetGame(false);
+        loadedMatrix = loadedState.matrix;
+        resetGame(RESET_TYPE.LOADING);
         updateResourceState(loadedState.resources);
 
         closeModal();
@@ -173,7 +195,7 @@ document.querySelector('.close-modal').addEventListener('click', closeModal);
 //***TODO - SET RANDOM MATRIX */
 
 function randomGridGenerator() {
-    return generateRandomMatrix(GRID_ROWS, GRID_COLS, 2);
+    return generateRandomMatrix(GRID_ROWS, GRID_COLS, TREE_COUNT);
 }
 
 

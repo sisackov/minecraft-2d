@@ -1,5 +1,11 @@
 import {
     RESOURCE,
+    GRID_ROWS,
+    GRID_COLS,
+    TRUNK_HEIGHT,
+    TREE_HEIGHT,
+    TREE_WIDTH,
+    TREE_SPACE,
 } from './game.js';
 
 /**
@@ -52,10 +58,10 @@ export function retrieveAllLocalStorageItems() {
 //**                Random matrix generation                            */
 //***********************************************************************/
 export function generateRandomMatrix(rows, cols, treeCount) {
-    let matrix = getEmptyMatrix(rows, cols, RESOURCE.SKY);
+    let matrix = getEmptyMatrix(GRID_ROWS, GRID_COLS, RESOURCE.SKY);
     setRandomGridBottom(matrix, rows, cols);
     fillGrass(matrix, cols);
-    insertTrees(matrix, treeCount, cols);
+    insertTrees(matrix, treeCount, cols,);
 
     return matrix;
 }
@@ -70,31 +76,40 @@ export function randomInRange(min, max) {
 }
 
 function insertTrees(matrix, treeCount, cols) {
-    for (let col = 1; col < cols - 1 && treeCount > 0; col++) {
+    let col = Math.floor(TREE_WIDTH / 2);
+    let colEnd = cols - Math.ceil(TREE_WIDTH / 2);
+    while (col < colEnd && treeCount > 0) {
         let grassIndex = getTopResourceIndex(matrix, RESOURCE.GRASS, col);
-        if (checkTreeLocation(matrix, grassIndex, col)) {
-            paintTree(matrix, grassIndex, col);
+        let treeStartCol = col - Math.floor(TREE_WIDTH / 2);
+        let treeEndCol = col + Math.ceil(TREE_WIDTH / 2);
+        if (checkTreeLocation(matrix, grassIndex, treeStartCol, treeEndCol)) {
+            paintTree(matrix, grassIndex, col, treeStartCol, treeEndCol);
             treeCount--;
+            col += TREE_SPACE + Math.ceil(TREE_WIDTH / 2);
+        } else {
+            col++;
         }
     }
 }
 
-function checkTreeLocation(matrix, rootRow, rootCol) {
+function checkTreeLocation(matrix, rootRow, treeStartCol, treeEndCol) {
     if (!rootRow) return false;
 
     let eligible = true;
-    for (let row = rootRow - 6; row < rootRow - 3 && eligible; row++) {
-        for (let col = rootCol - 1; col < rootCol + 2 && eligible; col++) {
+    let row = rootRow - (TRUNK_HEIGHT + TREE_HEIGHT);
+    while (row < rootRow - TRUNK_HEIGHT && eligible) {
+        for (let col = treeStartCol; col < treeEndCol && eligible; col++) {
             eligible = matrix[row][col] === RESOURCE.SKY;
         }
+        row++
     }
     return eligible;
 }
 
-function paintTree(matrix, rootRow, rootCol) {
-    for (let row = rootRow - 6; row < rootRow; row++) {
-        if (row < rootRow - 3) {
-            for (let col = rootCol - 1; col < rootCol + 2; col++) {
+function paintTree(matrix, rootRow, rootCol, treeStartCol, treeEndCol) {
+    for (let row = rootRow - (TRUNK_HEIGHT + TREE_HEIGHT); row < rootRow; row++) {
+        if (row < rootRow - TRUNK_HEIGHT) {
+            for (let col = treeStartCol; col < treeEndCol; col++) {
                 matrix[row][col] = RESOURCE.TREE;
             }
         } else {
@@ -103,6 +118,11 @@ function paintTree(matrix, rootRow, rootCol) {
     }
 }
 
+
+/**
+ * method to fill the grass in the matrix.
+ * grass can only be placed on the ground(dirt)
+ */
 function fillGrass(matrix, cols) {
     for (let col = 0; col < cols; col++) {
         let grassIndex = getTopResourceIndex(matrix, RESOURCE.DIRT, col);
