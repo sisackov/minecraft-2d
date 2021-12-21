@@ -53,7 +53,6 @@ export function retrieveAllLocalStorageItems() {
     return itemsMap;
 }
 
-
 //***********************************************************************/
 //**                Random matrix generation                            */
 //***********************************************************************/
@@ -61,14 +60,15 @@ export function generateRandomMatrix(rows, cols, treeCount) {
     let matrix = getEmptyMatrix(GRID_ROWS, GRID_COLS, RESOURCE.SKY);
     setRandomGridBottom(matrix, rows, cols);
     fillGrass(matrix, cols);
-    insertTrees(matrix, treeCount, cols,);
+    insertTrees(matrix, treeCount, cols);
 
     return matrix;
 }
 
 export function getEmptyMatrix(rows, cols, defaultValue) {
     return Array.from({ length: rows }, () =>
-        Array.from({ length: cols }, () => defaultValue));
+        Array.from({ length: cols }, () => defaultValue)
+    );
 }
 
 export function randomInRange(min, max) {
@@ -101,13 +101,17 @@ function checkTreeLocation(matrix, rootRow, treeStartCol, treeEndCol) {
         for (let col = treeStartCol; col < treeEndCol && eligible; col++) {
             eligible = matrix[row][col] === RESOURCE.SKY;
         }
-        row++
+        row++;
     }
     return eligible;
 }
 
 function paintTree(matrix, rootRow, rootCol, treeStartCol, treeEndCol) {
-    for (let row = rootRow - (TRUNK_HEIGHT + TREE_HEIGHT); row < rootRow; row++) {
+    for (
+        let row = rootRow - (TRUNK_HEIGHT + TREE_HEIGHT);
+        row < rootRow;
+        row++
+    ) {
         if (row < rootRow - TRUNK_HEIGHT) {
             for (let col = treeStartCol; col < treeEndCol; col++) {
                 matrix[row][col] = RESOURCE.TREE;
@@ -117,7 +121,6 @@ function paintTree(matrix, rootRow, rootCol, treeStartCol, treeEndCol) {
         }
     }
 }
-
 
 /**
  * method to fill the grass in the matrix.
@@ -133,9 +136,9 @@ function fillGrass(matrix, cols) {
 }
 
 /**
- * 
- * @param {Array} matrix 
- * @param {number} resource 
+ *
+ * @param {Array} matrix
+ * @param {number} resource
  * @param {number} col column in the matrix
  * @returns the index of the first row with above the queried resource type or undefined if none found
  */
@@ -153,10 +156,16 @@ function setRandomGridBottom(matrix, rows, cols) {
     let startRow = rows / 2;
     let endRow = rows;
 
+    const water = randomInRange(endRow - 4, endRow - 1);
+    const stone = water - 3;
+    const dirt = stone - 2;
     for (let col = 0; col < cols; col++) {
-        let waterStart = randomInRange((startRow + startRow * 0.6), endRow - 1);
-        let stoneStart = randomInRange((startRow + startRow * 0.4), waterStart);
-        let dirtStart = randomInRange(startRow, stoneStart);
+        let waterStart = randomInRange(water, water + 1);
+        let stoneStart = randomInRange(stone, stone + 1);
+        let dirtStart = randomInRange(dirt, dirt + 1);
+        // let waterStart = randomInRange(startRow + startRow * 0.6, endRow - 1);
+        // let stoneStart = randomInRange(startRow + startRow * 0.4, waterStart);
+        // let dirtStart = randomInRange(startRow, stoneStart);
 
         for (let row = startRow; row < endRow; row++) {
             let randomResource = RESOURCE.SKY;

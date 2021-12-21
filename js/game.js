@@ -129,10 +129,18 @@ function handleToolUse(gridElement) {
     }
 }
 
+/**
+ * Updates the grid element only if it's currently
+ * SKY(don't paint on other elements) and the selected
+ * resource exists in inventory
+ */
 function handleResourceUse(gridElement) {
     const resourceType = parseInt(selectedInventoryItem);
-
-    if (resourceMap.get(resourceType).amountCollected > 0) {
+    const gridResource = parseInt(gridElement.dataset.resourceType);
+    if (
+        resourceMap.get(resourceType).amountCollected > 0 &&
+        gridResource === RESOURCE.SKY
+    ) {
         updateInventoryItemAmount(resourceType, -1);
         updateGridElement(
             gridElement,
